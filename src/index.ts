@@ -1,8 +1,11 @@
-import { Client } from 'discord.js';
+import { Client, Message } from 'discord.js';
 import config from "../config.json";
 import loadCommands from './commands'
-import { Command, CommandGroup } from './types.js';
+import { Command, CommandGroup } from './types';
 import findCommand from './util/findCommand';
+import { updateDictionary } from './markov/dictionary';
+import { generateText } from './markov/generate';
+import state from './store'
 
 const client: Client = new Client();
 let commands: CommandGroup;
@@ -24,13 +27,12 @@ client.on('message', message => {
         return;
     }
 
-    // TODO: Handle markov dictionary updating
-
-    // Command parsing
     if (!message.content.startsWith(config.prefix)) {
+        updateDictionary(state, message)
         return
     }
     
+    // Command parsing
     let firstSpace: number | undefined = message.content.trim().indexOf(' ');
     firstSpace = firstSpace > 0 ? firstSpace : undefined;
     let commandName: string = message.content.slice(config.prefix.length, firstSpace);

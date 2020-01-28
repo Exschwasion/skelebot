@@ -1,15 +1,14 @@
 export interface MarkovData {
-    startTuples: string[]
+    startTuples: WordWeight
     dictionary: MarkovDictionary
 }
 
 export type MarkovDictionary = {
-    [tuple: string]: WeightedTuple[]
+    [tuple: string]: WordWeight
 }
 
-export type WeightedTuple = {
-    tuple: string
-    weight: number
+export type WordWeight = {
+    [word: string]: number
 }
 
 export type UsersState =  {
@@ -19,7 +18,7 @@ export type UsersState =  {
 export class UserState {
     public markovEnabled: boolean = true
     public markovData: MarkovData = {
-        startTuples: [],
+        startTuples: {},
         dictionary: {}
     }
 }
